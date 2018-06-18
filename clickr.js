@@ -1,24 +1,23 @@
-const button = document.getElementById('button');
-let display = document.getElementById('display');
-let counterField = document.getElementById('counter');
+const playButton = document.getElementById('play');
+const restartButtton = document.getElementById('restart');
+const display = document.getElementById('display');
+const counterField = document.getElementById('counter');
 
-let counter = 0;
-let countdown = 5;
-
-const countClicks = function() {
+const countClicks = () => {
     counter++;
     counterField.innerHTML = counter;
 }
 
-const startTimer = function() {
-    button.removeEventListener('click', startTimer);
+const startTimer = () => {
+    playButton.removeEventListener('click', startTimer);
     display.innerHTML = countdown;
     const timer = setInterval(() => {
         countdown--;
         if (countdown < 1) {
-            button.removeEventListener('click', countClicks);
+            playButton.removeEventListener('click', countClicks);
             display.innerHTML = 'Game Over';
             counterField.innerHTML = 'Your score is ' + counter;
+            showRestartButton();
             setTimeout(clearInterval(timer));
         } else {
             display.innerHTML = countdown;
@@ -26,8 +25,23 @@ const startTimer = function() {
     }, 1000)
 }
 
-button.addEventListener('click', countClicks);
-button.addEventListener('click', startTimer);
+const showRestartButton = () => {
+    setTimeout(() => restartButtton.style.display="block", 1000);
+}
+
+const restartGame = () => {
+    counter = 0;
+    countdown = 5; 
+    display.innerHTML = '';
+    counterField.innerHTML = '';
+    playButton.addEventListener('click', countClicks);
+    playButton.addEventListener('click', startTimer);
+    restartButtton.style.display="none";
+}
+
+restartGame();
+
+restartButtton.addEventListener('click', restartGame);
 
 
 
